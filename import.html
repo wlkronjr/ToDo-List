@@ -1,1 +1,158 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Home List Importer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #F7F8FA; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .card { background: #fff; border-radius: 16px; padding: 36px; max-width: 480px; width: 90%; box-shadow: 0 4px 24px rgba(0,0,0,0.08); text-align: center; }
+  .icon { font-size: 40px; margin-bottom: 12px; }
+  h2 { font-size: 20px; color: #111827; font-weight: 700; margin-bottom: 8px; }
+  p { font-size: 14px; color: #6B7280; margin-bottom: 24px; line-height: 1.5; }
+  button { background: #2D6A4F; color: #fff; border: none; border-radius: 10px; padding: 12px 28px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 12px; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  #status { font-size: 13px; color: #6B7280; margin-top: 8px; min-height: 20px; }
+  #status.success { color: #2D6A4F; font-weight: 700; }
+  #status.error { color: #DC2626; font-weight: 700; }
+  .item-list { text-align: left; margin: 16px 0; background: #F9FAFB; border-radius: 8px; padding: 12px 16px; max-height: 260px; overflow-y: auto; }
+  .item-list li { font-size: 13px; color: #374151; padding: 3px 0; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🏠</div>
+  <h2>Home List Importer</h2>
+  <p>Click below to sign in and import 23 home to-do items directly into your Google Sheet.</p>
+  <ul class="item-list" id="preview"></ul>
+  <button id="action-btn">Sign in & Import</button>
+  <div id="status"></div>
+</div>
+
+<script>
+const CLIENT_ID = "774457571800-ip5lgr1emojb29rqdj11k372n9fksbb4.apps.googleusercontent.com";
+const SHEET_ID  = "1DNJscIoBcdcAET2NJ8U3pesd6z2xxITRPEzmwS8vev4";
+const SCOPES    = "https://www.googleapis.com/auth/spreadsheets";
+
+const ITEMS = [
+  "Kill mold under patio",
+  "Sand deck",
+  "Seal deck",
+  "Prime under patio",
+  "Seal gaps from conduit",
+  "Lay pea gravel along side drainage",
+  "Spot fill limestone around house perimeter",
+  "Clean all eaves and under carport with pole brush",
+  "Sucker prune crepe myrtle",
+  "Prune crepe myrtle top and house side",
+  "Prune street side wax myrtle",
+  "Remove irises from ditch and culvert",
+  "Trim dead leaves from fountain & lemon grasses",
+  "Weed front bed along house",
+  "Selectively remove irises around beautyberry",
+  "Plug monkey grass in bed by cypress tree",
+  "Prune willow oak suckers",
+  "Pressure wash side patio and carport",
+  "Pressure wash driveway",
+  "Clean windows",
+  "Clean A/C vents and bathroom vents",
+  "Caulk stove edges",
+  "Caulk living room crown moulding"
+];
+
+const preview = document.getElementById("preview");
+ITEMS.forEach((item, i) => {
+  const li = document.createElement("li");
+  li.textContent = `${i + 1}. ${item}`;
+  preview.appendChild(li);
+});
+
+function genId() { return Math.random().toString(36).slice(2, 9); }
+function setStatus(msg, cls) {
+  const el = document.getElementById("status");
+  el.textContent = msg;
+  el.className = cls || "";
+}
+
+async function doImport(token) {
+  setStatus("Checking existing data…");
+  const res = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent("Home!A2:E")}`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  const json = await res.json();
+  const existing = (json.values || []).map(r => r[1]?.toLowerCase().trim());
+
+  const now = Date.now();
+  const newRows = ITEMS
+    .filter(text => !existing.includes(text.toLowerCase().trim()))
+    .map(text => [genId(), text, "Low", "FALSE", now]);
+
+  if (newRows.length === 0) {
+    setStatus("All items already exist in your Home list!", "success");
+    document.getElementById("action-btn").disabled = false;
+    return;
+  }
+
+  setStatus(`Adding ${newRows.length} items…`);
+
+  const appendRes = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent("Home!A:E")}?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+    {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ values: newRows }),
+    }
+  );
+
+  if (!appendRes.ok) {
+    const err = await appendRes.text();
+    throw new Error(err);
+  }
+
+  const skipped = ITEMS.length - newRows.length;
+  let msg = `✅ ${newRows.length} items added to your Home list!`;
+  if (skipped > 0) msg += ` (${skipped} already existed, skipped)`;
+  setStatus(msg, "success");
+}
+
+document.getElementById("action-btn").addEventListener("click", () => {
+  if (!window.google || !window.google.accounts) {
+    setStatus("Google API not loaded yet — please wait a moment and try again.", "error");
+    return;
+  }
+  const btn = document.getElementById("action-btn");
+  btn.disabled = true;
+  setStatus("Opening Google sign-in…");
+
+  const client = window.google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: async (resp) => {
+      if (resp.error) {
+        setStatus("Sign-in error: " + resp.error, "error");
+        btn.disabled = false;
+        return;
+      }
+      try {
+        await doImport(resp.access_token);
+      } catch(e) {
+        setStatus("Import failed: " + e.message, "error");
+        btn.disabled = false;
+      }
+    },
+  });
+  client.requestAccessToken({ prompt: "consent" });
+});
+
+(function() {
+  const s = document.createElement("script");
+  s.src = "https://accounts.google.com/gsi/client";
+  s.async = true; s.defer = true;
+  document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>
