@@ -7,136 +7,50 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Inter', system-ui, sans-serif; background: #F7F8FA; min-height: 100vh; }
-
-  #signin-screen {
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  }
-  .signin-card {
-    background: #fff; border-radius: 16px; padding: 40px 36px; text-align: center;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 360px; width: 90%;
-  }
+  #signin-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .signin-card { background: #fff; border-radius: 16px; padding: 40px 36px; text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.08); max-width: 360px; width: 90%; }
   .signin-card .icon { font-size: 40px; margin-bottom: 12px; }
   .signin-card h2 { font-size: 22px; color: #111827; font-weight: 700; margin-bottom: 6px; }
   .signin-card p { font-size: 14px; color: #6B7280; line-height: 1.5; margin-bottom: 28px; }
-  #signin-btn {
-    background: #1E3A5F; color: #fff; border: none; border-radius: 10px;
-    padding: 12px 28px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%;
-  }
+  #signin-btn { background: #1E3A5F; color: #fff; border: none; border-radius: 10px; padding: 12px 28px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; }
   #signin-btn:hover { background: #16304f; }
   #auth-error { color: #DC2626; font-size: 13px; margin-top: 12px; display: none; }
-
   #app { display: none; flex-direction: column; min-height: 100vh; }
-
-  #header {
-    background: #111827; padding: 14px 20px 0;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  }
-  #header-top {
-    display: flex; align-items: center; gap: 10; margin-bottom: 12px;
-  }
+  #header { background: #111827; padding: 14px 20px 0; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+  #header-top { display: flex; align-items: center; gap: 10; margin-bottom: 12px; }
   #app-title { color: #F9FAFB; font-weight: 700; font-size: 17px; }
   #saving-indicator { color: #9CA3AF; font-size: 11px; margin-left: 4px; display: none; }
-  #search-input {
-    margin-left: auto; background: #1F2937; border: 1px solid #374151;
-    border-radius: 8px; color: #F9FAFB; padding: 5px 10px; font-size: 13px;
-    width: 130px; outline: none;
-  }
-  #signout-btn {
-    background: none; border: 1px solid #374151; border-radius: 8px;
-    color: #9CA3AF; font-size: 12px; padding: 5px 10px; cursor: pointer;
-  }
-
+  #search-input { margin-left: auto; background: #1F2937; border: 1px solid #374151; border-radius: 8px; color: #F9FAFB; padding: 5px 10px; font-size: 13px; width: 130px; outline: none; }
+  #signout-btn { background: none; border: 1px solid #374151; border-radius: 8px; color: #9CA3AF; font-size: 12px; padding: 5px 10px; cursor: pointer; }
   #tabs { display: flex; gap: 2px; overflow-x: auto; }
-  .tab-btn {
-    background: transparent; border: none; border-radius: 8px 8px 0 0;
-    padding: 8px 13px; cursor: pointer; display: flex; align-items: center;
-    gap: 5px; color: #9CA3AF; font-weight: 500; font-size: 13px;
-    white-space: nowrap; transition: color 0.15s;
-  }
+  .tab-btn { background: transparent; border: none; border-radius: 8px 8px 0 0; padding: 8px 13px; cursor: pointer; display: flex; align-items: center; gap: 5px; color: #9CA3AF; font-weight: 500; font-size: 13px; white-space: nowrap; transition: color 0.15s; }
   .tab-btn.active { background: #F7F8FA; font-weight: 700; }
-  .tab-badge {
-    background: #374151; color: #fff; border-radius: 99px;
-    font-size: 10px; padding: 1px 6px; font-weight: 700;
-  }
+  .tab-badge { background: #374151; color: #fff; border-radius: 99px; font-size: 10px; padding: 1px 6px; font-weight: 700; }
   .tab-btn.active .tab-badge { color: #fff; }
-
   #body { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 20px 16px; }
-
   #progress-wrap { margin-bottom: 16px; display: none; }
   #progress-labels { display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; margin-bottom: 4px; }
   #progress-track { background: #E5E7EB; border-radius: 99px; height: 5px; }
   #progress-bar { height: 100%; border-radius: 99px; transition: width 0.3s; }
-
-  #add-form {
-    background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: flex; gap: 8px;
-    align-items: center; flex-wrap: wrap;
-  }
-  #new-item-input {
-    flex: 1; min-width: 160px; border: 1px solid #E5E7EB; border-radius: 8px;
-    padding: 8px 12px; font-size: 14px; outline: none; background: #F9FAFB;
-  }
-  #priority-select {
-    border: 1px solid #E5E7EB; border-radius: 8px; padding: 8px 10px;
-    font-size: 13px; background: #F9FAFB; font-weight: 600; cursor: pointer; outline: none;
-  }
-  #add-btn {
-    color: #fff; border: none; border-radius: 8px; padding: 8px 18px;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-  }
-
+  #add-form { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  #new-item-input { flex: 1; min-width: 160px; border: 1px solid #E5E7EB; border-radius: 8px; padding: 8px 12px; font-size: 14px; outline: none; background: #F9FAFB; }
+  #priority-select { border: 1px solid #E5E7EB; border-radius: 8px; padding: 8px 10px; font-size: 13px; background: #F9FAFB; font-weight: 600; cursor: pointer; outline: none; }
+  #add-btn { color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-size: 14px; font-weight: 600; cursor: pointer; }
   #filter-row { display: flex; gap: 6px; margin-bottom: 14px; align-items: center; }
-  .filter-btn {
-    border: 1.5px solid #E5E7EB; border-radius: 99px; padding: 4px 12px;
-    font-size: 12px; font-weight: 600; background: #fff; color: #6B7280;
-    cursor: pointer; text-transform: capitalize;
-  }
+  .filter-btn { border: 1.5px solid #E5E7EB; border-radius: 99px; padding: 4px 12px; font-size: 12px; font-weight: 600; background: #fff; color: #6B7280; cursor: pointer; text-transform: capitalize; }
   .filter-btn.active { color: #fff; }
-  #clear-done-btn {
-    margin-left: auto; border: none; background: none; color: #EF4444;
-    font-size: 12px; cursor: pointer; font-weight: 600; display: none;
-  }
-
+  #clear-done-btn { margin-left: auto; border: none; background: none; color: #EF4444; font-size: 12px; cursor: pointer; font-weight: 600; display: none; }
   #items-list { display: flex; flex-direction: column; gap: 8px; }
   #empty-msg { text-align: center; padding: 48px 0; color: #9CA3AF; font-size: 14px; }
   #loading-msg { text-align: center; padding: 48px 0; color: #9CA3AF; font-size: 14px; }
-
-  .list-item {
-    background: #fff; border-radius: 10px; padding: 10px 14px;
-    display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    border-left: 3px solid #ccc;
-  }
-  .item-checkbox {
-    width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0; cursor: pointer;
-    border: 2px solid #ccc; display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: #fff; font-weight: 700; user-select: none;
-  }
-  .item-text {
-    flex: 1; min-width: 0; font-size: 14px; color: #111827;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
+  .list-item { background: #fff; border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 3px solid #ccc; }
+  .item-checkbox { width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0; cursor: pointer; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; font-weight: 700; user-select: none; }
+  .item-text { flex: 1; min-width: 0; font-size: 14px; color: #111827; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .item-text.done { text-decoration: line-through; color: #9CA3AF; }
-  .item-edit-input {
-    flex: 1; border: 1px solid #D1D5DB; border-radius: 6px;
-    padding: 2px 8px; font-size: 14px; outline: none;
-  }
-  .item-priority {
-    font-size: 10px; font-weight: 700; border-radius: 99px;
-    padding: 2px 7px; flex-shrink: 0;
-  }
-  .item-action-btn {
-    background: none; border: none; cursor: pointer; font-size: 14px;
-    color: #9CA3AF; padding: 0 2px;
-  }
-
-  #toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: #111827; color: #fff; border-radius: 10px; padding: 10px 20px;
-    font-size: 13px; font-weight: 600; z-index: 9999;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3); pointer-events: none;
-    opacity: 0; transition: opacity 0.2s;
-  }
+  .item-edit-input { flex: 1; border: 1px solid #D1D5DB; border-radius: 6px; padding: 2px 8px; font-size: 14px; outline: none; }
+  .item-priority { font-size: 10px; font-weight: 700; border-radius: 99px; padding: 2px 7px; flex-shrink: 0; }
+  .item-action-btn { background: none; border: none; cursor: pointer; font-size: 14px; color: #9CA3AF; padding: 0 2px; }
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #111827; color: #fff; border-radius: 10px; padding: 10px 20px; font-size: 13px; font-weight: 600; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); pointer-events: none; opacity: 0; transition: opacity 0.2s; }
   #toast.show { opacity: 1; }
 </style>
 </head>
@@ -188,6 +102,12 @@
       <button class="filter-btn" data-filter="active">active</button>
       <button class="filter-btn" data-filter="done">done</button>
       <button id="clear-done-btn">Clear done</button>
+    </div>
+    <div id="import-wrap" style="display:none; margin-bottom:14px;">
+      <button id="import-btn" style="background:#2D6A4F;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;">
+        📋 Import 23 Home items from handwritten list
+      </button>
+      <span id="import-status" style="font-size:12px;color:#6B7280;margin-left:10px;"></span>
     </div>
 
     <div id="loading-msg">Loading from Google Sheets…</div>
@@ -285,8 +205,8 @@ async function ensureSheets() {
 }
 
 async function loadCategory(catId) {
-  const rows = await sheetsGet(`${catId}!A2:E`);
-  return rows.filter(r => r[0]).map(r => ({
+  const rows = await sheetsGet(`${catId}!A1:E`);
+  return rows.filter(r => r[0] && r[0] !== "ID").map(r => ({
     id: r[0], text: r[1] || "", priority: r[2] || "Medium",
     done: r[3] === "TRUE", created: Number(r[4]) || Date.now(),
   }));
@@ -405,6 +325,7 @@ function switchTab(catId) {
   document.querySelectorAll(".filter-btn.active").forEach(b => {
     b.style.background = cat.color; b.style.borderColor = cat.color;
   });
+  updateImportBtn();
   loadTab();
 }
 
@@ -452,6 +373,7 @@ async function loadTab() {
     showToast("Load error: " + e.message);
   }
   document.getElementById("loading-msg").style.display = "none";
+  updateImportBtn();
   renderItems();
 }
 
@@ -644,612 +566,57 @@ function setSaving(val) {
   document.getElementById("saving-indicator").style.display = val ? "inline" : "none";
 }
 
-document.getElementById("signin-btn").addEventListener("click", doSignIn);
-
-(function loadGIS() {
-  const s = document.createElement("script");
-  s.src = "https://accounts.google.com/gsi/client";
-  s.async = true;
-  s.defer = true;
-  document.head.appendChild(s);
-})();
-</script>
-</body>
-</html>  #app-title { color: #F9FAFB; font-weight: 700; font-size: 17px; }
-  #saving-indicator { color: #9CA3AF; font-size: 11px; margin-left: 4px; display: none; }
-  #search-input {
-    margin-left: auto; background: #1F2937; border: 1px solid #374151;
-    border-radius: 8px; color: #F9FAFB; padding: 5px 10px; font-size: 13px;
-    width: 130px; outline: none;
-  }
-  #signout-btn {
-    background: none; border: 1px solid #374151; border-radius: 8px;
-    color: #9CA3AF; font-size: 12px; padding: 5px 10px; cursor: pointer;
-  }
-
-  #tabs { display: flex; gap: 2px; overflow-x: auto; }
-  .tab-btn {
-    background: transparent; border: none; border-radius: 8px 8px 0 0;
-    padding: 8px 13px; cursor: pointer; display: flex; align-items: center;
-    gap: 5px; color: #9CA3AF; font-weight: 500; font-size: 13px;
-    white-space: nowrap; transition: color 0.15s;
-  }
-  .tab-btn.active { background: #F7F8FA; font-weight: 700; }
-  .tab-badge {
-    background: #374151; color: #fff; border-radius: 99px;
-    font-size: 10px; padding: 1px 6px; font-weight: 700;
-  }
-  .tab-btn.active .tab-badge { color: #fff; }
-
-  #body { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 20px 16px; }
-
-  #progress-wrap { margin-bottom: 16px; display: none; }
-  #progress-labels { display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; margin-bottom: 4px; }
-  #progress-track { background: #E5E7EB; border-radius: 99px; height: 5px; }
-  #progress-bar { height: 100%; border-radius: 99px; transition: width 0.3s; }
-
-  #add-form {
-    background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: flex; gap: 8px;
-    align-items: center; flex-wrap: wrap;
-  }
-  #new-item-input {
-    flex: 1; min-width: 160px; border: 1px solid #E5E7EB; border-radius: 8px;
-    padding: 8px 12px; font-size: 14px; outline: none; background: #F9FAFB;
-  }
-  #priority-select {
-    border: 1px solid #E5E7EB; border-radius: 8px; padding: 8px 10px;
-    font-size: 13px; background: #F9FAFB; font-weight: 600; cursor: pointer; outline: none;
-  }
-  #add-btn {
-    color: #fff; border: none; border-radius: 8px; padding: 8px 18px;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-  }
-
-  #filter-row { display: flex; gap: 6px; margin-bottom: 14px; align-items: center; }
-  .filter-btn {
-    border: 1.5px solid #E5E7EB; border-radius: 99px; padding: 4px 12px;
-    font-size: 12px; font-weight: 600; background: #fff; color: #6B7280;
-    cursor: pointer; text-transform: capitalize;
-  }
-  .filter-btn.active { color: #fff; }
-  #clear-done-btn {
-    margin-left: auto; border: none; background: none; color: #EF4444;
-    font-size: 12px; cursor: pointer; font-weight: 600; display: none;
-  }
-
-  #items-list { display: flex; flex-direction: column; gap: 8px; }
-  #empty-msg { text-align: center; padding: 48px 0; color: #9CA3AF; font-size: 14px; }
-  #loading-msg { text-align: center; padding: 48px 0; color: #9CA3AF; font-size: 14px; }
-
-  .list-item {
-    background: #fff; border-radius: 10px; padding: 10px 14px;
-    display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    border-left: 3px solid #ccc;
-  }
-  .item-checkbox {
-    width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0; cursor: pointer;
-    border: 2px solid #ccc; display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: #fff; font-weight: 700; user-select: none;
-  }
-  .item-text {
-    flex: 1; min-width: 0; font-size: 14px; color: #111827;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .item-text.done { text-decoration: line-through; color: #9CA3AF; }
-  .item-edit-input {
-    flex: 1; border: 1px solid #D1D5DB; border-radius: 6px;
-    padding: 2px 8px; font-size: 14px; outline: none;
-  }
-  .item-priority {
-    font-size: 10px; font-weight: 700; border-radius: 99px;
-    padding: 2px 7px; flex-shrink: 0;
-  }
-  .item-action-btn {
-    background: none; border: none; cursor: pointer; font-size: 14px;
-    color: #9CA3AF; padding: 0 2px;
-  }
-
-  #toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: #111827; color: #fff; border-radius: 10px; padding: 10px 20px;
-    font-size: 13px; font-weight: 600; z-index: 9999;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3); pointer-events: none;
-    opacity: 0; transition: opacity 0.2s;
-  }
-  #toast.show { opacity: 1; }
-</style>
-</head>
-<body>
-
-<div id="signin-screen">
-  <div class="signin-card">
-    <div class="icon">📝</div>
-    <h2>My Lists</h2>
-    <p>Sign in with Google to load and save your lists to Google Sheets.</p>
-    <button id="signin-btn">Sign in with Google</button>
-    <div id="auth-error"></div>
-  </div>
-</div>
-
-<div id="app">
-  <div id="header">
-    <div id="header-top">
-      <span style="font-size:20px">📝</span>
-      <span id="app-title">My Lists</span>
-      <span id="saving-indicator">Saving…</span>
-      <input id="search-input" placeholder="Search…" type="text"/>
-      <button id="signout-btn">Sign out</button>
-    </div>
-    <div id="tabs"></div>
-  </div>
-
-  <div id="body">
-    <div id="progress-wrap">
-      <div id="progress-labels">
-        <span id="progress-text">0 of 0 done</span>
-        <span id="progress-pct">0%</span>
-      </div>
-      <div id="progress-track"><div id="progress-bar"></div></div>
-    </div>
-
-    <div id="add-form">
-      <input id="new-item-input" placeholder="Add item…" type="text"/>
-      <select id="priority-select">
-        <option value="High">High</option>
-        <option value="Medium" selected>Medium</option>
-        <option value="Low">Low</option>
-      </select>
-      <button id="add-btn">Add</button>
-    </div>
-
-    <div id="filter-row">
-      <button class="filter-btn active" data-filter="all">all</button>
-      <button class="filter-btn" data-filter="active">active</button>
-      <button class="filter-btn" data-filter="done">done</button>
-      <button id="clear-done-btn">Clear done</button>
-    </div>
-
-    <div id="loading-msg">Loading from Google Sheets…</div>
-    <div id="empty-msg" style="display:none"></div>
-    <div id="items-list"></div>
-  </div>
-</div>
-
-<div id="toast"></div>
-
-<script>
-const CLIENT_ID = "774457571800-ip5lgr1emojb29rqdj11k372n9fksbb4.apps.googleusercontent.com";
-const SHEET_ID  = "1DNJscIoBcdcAET2NJ8U3pesd6z2xxITRPEzmwS8vev4";
-const SCOPES    = "https://www.googleapis.com/auth/spreadsheets";
-
-const CATEGORIES = [
-  { id: "Work",   label: "Work",   icon: "💼", color: "#1E3A5F" },
-  { id: "Home",   label: "Home",   icon: "🏠", color: "#2D6A4F" },
-  { id: "Health", label: "Health", icon: "❤️", color: "#7B2D8B" },
-  { id: "Car",    label: "Car",    icon: "🚗", color: "#B5451B" },
-  { id: "Needs",  label: "Needs",  icon: "🛒", color: "#7A6000" },
-  { id: "Other",  label: "Other",  icon: "📋", color: "#374151" },
+const HOME_IMPORT_ITEMS = [
+  "Kill mold under patio","Sand deck","Seal deck","Prime under patio",
+  "Seal gaps from conduit","Lay pea gravel along side drainage",
+  "Spot fill limestone around house perimeter",
+  "Clean all eaves and under carport with pole brush",
+  "Sucker prune crepe myrtle","Prune crepe myrtle top and house side",
+  "Prune street side wax myrtle","Remove irises from ditch and culvert",
+  "Trim dead leaves from fountain & lemon grasses","Weed front bed along house",
+  "Selectively remove irises around beautyberry",
+  "Plug monkey grass in bed by cypress tree","Prune willow oak suckers",
+  "Pressure wash side patio and carport","Pressure wash driveway",
+  "Clean windows","Clean A/C vents and bathroom vents",
+  "Caulk stove edges","Caulk living room crown moulding"
 ];
 
-const PRIORITY_COLOR = { Low: "#6B7280", Medium: "#D97706", High: "#DC2626" };
-const PRIORITY_ORDER = ["High", "Medium", "Low"];
-
-let token = null;
-let activeTab = "Work";
-let items = [];
-let allCounts = {};
-let filter = "all";
-let searchVal = "";
-let saving = false;
-let editingId = null;
-
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2500);
+function updateImportBtn() {
+  document.getElementById("import-wrap").style.display = activeTab === "Home" ? "block" : "none";
 }
 
-function sheetsUrl(range, qs = "") {
-  return `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}${qs}`;
-}
-async function sheetsGet(range) {
-  const r = await fetch(sheetsUrl(range), { headers: { Authorization: `Bearer ${token}` } });
-  if (!r.ok) throw new Error(`Read error ${r.status}`);
-  return (await r.json()).values || [];
-}
-async function sheetsAppend(range, values) {
-  const r = await fetch(sheetsUrl(range, "?valueInputOption=RAW&insertDataOption=INSERT_ROWS"), {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ values }),
-  });
-  if (!r.ok) throw new Error(`Append error ${r.status}`);
-}
-async function sheetsClear(range) {
-  const r = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(range)}:clear`,
-    { method: "POST", headers: { Authorization: `Bearer ${token}` } }
-  );
-  if (!r.ok) throw new Error(`Clear error ${r.status}`);
-}
-async function sheetsBatchUpdate(range, values) {
-  const r = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchUpdate`,
-    {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ valueInputOption: "RAW", data: [{ range, values }] }),
-    }
-  );
-  if (!r.ok) throw new Error(`Update error ${r.status}`);
-}
-
-async function ensureSheets() {
-  const r = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties.title`,
-    { headers: { Authorization: `Bearer ${token}` } }
-  );
-  const meta = await r.json();
-  const existing = (meta.sheets || []).map(s => s.properties.title);
-  const toAdd = CATEGORIES.map(c => c.id).filter(id => !existing.includes(id));
-  if (toAdd.length) {
-    await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ requests: toAdd.map(t => ({ addSheet: { properties: { title: t } } })) }),
-    });
-    for (const t of toAdd) await sheetsAppend(`${t}!A1`, [["ID","Text","Priority","Done","Created"]]);
-  }
-}
-
-async function loadCategory(catId) {
-  const rows = await sheetsGet(`${catId}!A2:E`);
-  return rows.filter(r => r[0]).map(r => ({
-    id: r[0], text: r[1] || "", priority: r[2] || "Medium",
-    done: r[3] === "TRUE", created: Number(r[4]) || Date.now(),
-  }));
-}
-
-async function saveCategory(catId, its) {
-  await sheetsClear(`${catId}!A2:E`);
-  if (!its.length) return;
-  const values = its.map(i => [i.id, i.text, i.priority, i.done ? "TRUE" : "FALSE", i.created]);
-  await sheetsBatchUpdate(`${catId}!A2:E${its.length + 1}`, values);
-}
-
-function genId() { return Math.random().toString(36).slice(2, 9); }
-
-function doSignIn() {
-  if (!window.google || !window.google.accounts) {
-    const el = document.getElementById("auth-error");
-    el.style.display = "block";
-    el.textContent = "Google API not loaded yet — please wait a moment and try again.";
-    return;
-  }
-  const client = window.google.accounts.oauth2.initTokenClient({
-    client_id: CLIENT_ID,
-    scope: SCOPES,
-    callback: async (resp) => {
-      if (resp.error) {
-        const el = document.getElementById("auth-error");
-        el.style.display = "block";
-        el.textContent = "Sign-in error: " + resp.error;
-        return;
-      }
-      token = resp.access_token;
-      document.getElementById("signin-screen").style.display = "none";
-      document.getElementById("app").style.display = "flex";
-      await initApp();
-    },
-  });
-  client.requestAccessToken({ prompt: "consent" });
-}
-
-function doSignOut() {
-  if (token) window.google.accounts.oauth2.revoke(token, () => {});
-  token = null; items = []; allCounts = {};
-  document.getElementById("app").style.display = "none";
-  document.getElementById("signin-screen").style.display = "flex";
-}
-
-async function initApp() {
-  buildTabs();
-  buildFilters();
-  document.getElementById("search-input").addEventListener("input", e => {
-    searchVal = e.target.value;
-    renderItems();
-  });
-  document.getElementById("add-btn").addEventListener("click", addItem);
-  document.getElementById("new-item-input").addEventListener("keydown", e => {
-    if (e.key === "Enter") addItem();
-  });
-  document.getElementById("signout-btn").addEventListener("click", doSignOut);
-  document.getElementById("clear-done-btn").addEventListener("click", clearDone);
-  document.getElementById("priority-select").addEventListener("change", e => {
-    updatePriorityColor(e.target.value);
-  });
-  updatePriorityColor("Medium");
-  await loadTab();
-}
-
-function updatePriorityColor(p) {
-  document.getElementById("priority-select").style.color = PRIORITY_COLOR[p];
-}
-
-function buildTabs() {
-  const tabsEl = document.getElementById("tabs");
-  tabsEl.innerHTML = "";
-  CATEGORIES.forEach(cat => {
-    const btn = document.createElement("button");
-    btn.className = "tab-btn" + (cat.id === activeTab ? " active" : "");
-    btn.dataset.id = cat.id;
-    if (cat.id === activeTab) btn.style.color = cat.color;
-    btn.innerHTML = `<span>${cat.icon}</span><span>${cat.label}</span>`;
-    const badge = document.createElement("span");
-    badge.className = "tab-badge";
-    badge.id = `badge-${cat.id}`;
-    badge.style.display = "none";
-    if (cat.id === activeTab) badge.style.background = cat.color;
-    btn.appendChild(badge);
-    btn.addEventListener("click", () => switchTab(cat.id));
-    tabsEl.appendChild(btn);
-  });
-}
-
-function updateBadges() {
-  CATEGORIES.forEach(cat => {
-    const badge = document.getElementById(`badge-${cat.id}`);
-    const count = allCounts[cat.id] || 0;
-    badge.textContent = count;
-    badge.style.display = count > 0 ? "inline" : "none";
-  });
-}
-
-function switchTab(catId) {
-  activeTab = catId;
-  filter = "all";
-  searchVal = "";
-  document.getElementById("search-input").value = "";
-  document.querySelectorAll(".tab-btn").forEach(btn => {
-    const cat = CATEGORIES.find(c => c.id === btn.dataset.id);
-    btn.classList.toggle("active", btn.dataset.id === catId);
-    btn.style.color = btn.dataset.id === catId ? cat.color : "";
-    const badge = document.getElementById(`badge-${btn.dataset.id}`);
-    badge.style.background = btn.dataset.id === catId ? cat.color : "#374151";
-  });
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.toggle("active", b.dataset.filter === "all"));
-  const cat = CATEGORIES.find(c => c.id === catId);
-  document.getElementById("add-btn").style.background = cat.color;
-  document.querySelectorAll(".filter-btn.active").forEach(b => {
-    b.style.background = cat.color; b.style.borderColor = cat.color;
-  });
-  loadTab();
-}
-
-function buildFilters() {
-  document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      filter = btn.dataset.filter;
-      document.querySelectorAll(".filter-btn").forEach(b => {
-        b.classList.remove("active");
-        b.style.background = "#fff";
-        b.style.borderColor = "#E5E7EB";
-        b.style.color = "#6B7280";
-      });
-      const cat = CATEGORIES.find(c => c.id === activeTab);
-      btn.classList.add("active");
-      btn.style.background = cat.color;
-      btn.style.borderColor = cat.color;
-      btn.style.color = "#fff";
-      renderItems();
-    });
-  });
-  const cat = CATEGORIES.find(c => c.id === activeTab);
-  document.getElementById("add-btn").style.background = cat.color;
-  const activeFilterBtn = document.querySelector(".filter-btn.active");
-  if (activeFilterBtn) {
-    activeFilterBtn.style.background = cat.color;
-    activeFilterBtn.style.borderColor = cat.color;
-    activeFilterBtn.style.color = "#fff";
-  }
-}
-
-async function loadTab() {
-  document.getElementById("loading-msg").style.display = "block";
-  document.getElementById("empty-msg").style.display = "none";
-  document.getElementById("items-list").innerHTML = "";
+async function doHomeImport() {
+  const btn = document.getElementById("import-btn");
+  const status = document.getElementById("import-status");
+  btn.disabled = true;
+  status.textContent = "Checking for duplicates…";
   try {
-    await ensureSheets();
-    items = await loadCategory(activeTab);
-    for (const cat of CATEGORIES) {
-      const rows = await loadCategory(cat.id);
-      allCounts[cat.id] = rows.filter(i => !i.done).length;
+    const existing = items.map(i => i.text.toLowerCase().trim());
+    const toAdd = HOME_IMPORT_ITEMS.filter(t => !existing.includes(t.toLowerCase().trim()));
+    if (toAdd.length === 0) {
+      status.textContent = "✅ All items already in your Home list!";
+      btn.style.display = "none";
+      return;
     }
+    status.textContent = `Adding ${toAdd.length} items…`;
+    const now = Date.now();
+    const newItems = toAdd.map(text => ({ id: genId(), text, priority: "Low", done: false, created: now }));
+    items = [...newItems, ...items];
+    allCounts["Home"] = (allCounts["Home"] || 0) + newItems.length;
     updateBadges();
-  } catch (e) {
-    showToast("Load error: " + e.message);
+    renderItems();
+    await saveCategory("Home", items);
+    const skipped = HOME_IMPORT_ITEMS.length - toAdd.length;
+    status.textContent = `✅ ${toAdd.length} items added!${skipped > 0 ? ` (${skipped} duplicates skipped)` : ""}`;
+    btn.style.display = "none";
+  } catch(e) {
+    status.textContent = "❌ Import failed: " + e.message;
+    btn.disabled = false;
   }
-  document.getElementById("loading-msg").style.display = "none";
-  renderItems();
-}
-
-function renderItems() {
-  const cat = CATEGORIES.find(c => c.id === activeTab);
-  const doneCount = items.filter(i => i.done).length;
-  const totalCount = items.length;
-
-  const pw = document.getElementById("progress-wrap");
-  pw.style.display = totalCount > 0 ? "block" : "none";
-  document.getElementById("progress-text").textContent = `${doneCount} of ${totalCount} done`;
-  document.getElementById("progress-pct").textContent = totalCount ? Math.round((doneCount/totalCount)*100)+"%" : "0%";
-  document.getElementById("progress-bar").style.width = totalCount ? `${(doneCount/totalCount)*100}%` : "0%";
-  document.getElementById("progress-bar").style.background = cat.color;
-
-  const cdb = document.getElementById("clear-done-btn");
-  cdb.style.display = doneCount > 0 ? "block" : "none";
-  cdb.textContent = `Clear done (${doneCount})`;
-
-  let visible = items.filter(i => {
-    if (filter === "active" && i.done) return false;
-    if (filter === "done" && !i.done) return false;
-    if (searchVal && !i.text.toLowerCase().includes(searchVal.toLowerCase())) return false;
-    return true;
-  }).sort((a, b) => {
-    if (a.done !== b.done) return a.done ? 1 : -1;
-    return PRIORITY_ORDER.indexOf(a.priority) - PRIORITY_ORDER.indexOf(b.priority);
-  });
-
-  document.getElementById("new-item-input").placeholder = `Add to ${cat.label}…`;
-
-  const list = document.getElementById("items-list");
-  const empty = document.getElementById("empty-msg");
-  list.innerHTML = "";
-
-  if (visible.length === 0) {
-    empty.style.display = "block";
-    if (searchVal) empty.textContent = "No matching items.";
-    else if (filter === "done") empty.textContent = "Nothing done yet.";
-    else empty.textContent = `Nothing in ${cat.label} yet — add something above.`;
-    return;
-  }
-  empty.style.display = "none";
-
-  visible.forEach(item => {
-    const pc = PRIORITY_COLOR[item.priority];
-    const div = document.createElement("div");
-    div.className = "list-item";
-    div.style.borderLeftColor = item.done ? "#E5E7EB" : pc;
-    div.style.opacity = item.done ? "0.6" : "1";
-
-    const cb = document.createElement("div");
-    cb.className = "item-checkbox";
-    cb.style.borderColor = item.done ? "transparent" : cat.color;
-    cb.style.background = item.done ? cat.color : "transparent";
-    cb.innerHTML = item.done ? "✓" : "";
-    cb.addEventListener("click", () => toggleDone(item.id));
-
-    let textEl;
-    if (editingId === item.id) {
-      textEl = document.createElement("input");
-      textEl.className = "item-edit-input";
-      textEl.value = item.text;
-      textEl.addEventListener("keydown", e => {
-        if (e.key === "Enter") saveEdit(item.id, textEl.value);
-        if (e.key === "Escape") { editingId = null; renderItems(); }
-      });
-      textEl.addEventListener("blur", () => saveEdit(item.id, textEl.value));
-      setTimeout(() => textEl.focus(), 10);
-    } else {
-      textEl = document.createElement("span");
-      textEl.className = "item-text" + (item.done ? " done" : "");
-      textEl.textContent = item.text;
-    }
-
-    const badge = document.createElement("span");
-    badge.className = "item-priority";
-    badge.style.color = pc;
-    badge.style.background = pc + "18";
-    badge.textContent = item.priority;
-
-    const editBtn = document.createElement("button");
-    editBtn.className = "item-action-btn";
-    editBtn.innerHTML = "✏️";
-    editBtn.title = "Edit";
-    editBtn.addEventListener("click", () => { editingId = item.id; renderItems(); });
-
-    const delBtn = document.createElement("button");
-    delBtn.className = "item-action-btn";
-    delBtn.innerHTML = "🗑️";
-    delBtn.title = "Delete";
-    delBtn.addEventListener("click", () => deleteItem(item.id));
-
-    div.appendChild(cb);
-    div.appendChild(textEl);
-    div.appendChild(badge);
-    div.appendChild(editBtn);
-    div.appendChild(delBtn);
-    list.appendChild(div);
-  });
-}
-
-async function addItem() {
-  const text = document.getElementById("new-item-input").value.trim();
-  const priority = document.getElementById("priority-select").value;
-  if (!text) return;
-  const newItem = { id: genId(), text, priority, done: false, created: Date.now() };
-  items = [newItem, ...items];
-  document.getElementById("new-item-input").value = "";
-  allCounts[activeTab] = (allCounts[activeTab] || 0) + 1;
-  updateBadges();
-  renderItems();
-  setSaving(true);
-  try {
-    await saveCategory(activeTab, items);
-    showToast("Item added");
-  } catch(e) { showToast("Save failed: " + e.message); }
-  setSaving(false);
-}
-
-async function toggleDone(id) {
-  items = items.map(i => i.id === id ? { ...i, done: !i.done } : i);
-  const item = items.find(i => i.id === id);
-  allCounts[activeTab] = Math.max(0, (allCounts[activeTab] || 0) + (item.done ? -1 : 1));
-  updateBadges();
-  renderItems();
-  setSaving(true);
-  try { await saveCategory(activeTab, items); }
-  catch(e) { showToast("Save failed: " + e.message); }
-  setSaving(false);
-}
-
-async function deleteItem(id) {
-  const wasActive = !items.find(i => i.id === id)?.done;
-  items = items.filter(i => i.id !== id);
-  if (wasActive) allCounts[activeTab] = Math.max(0, (allCounts[activeTab] || 0) - 1);
-  updateBadges();
-  renderItems();
-  setSaving(true);
-  try {
-    await saveCategory(activeTab, items);
-    showToast("Item deleted");
-  } catch(e) { showToast("Save failed: " + e.message); }
-  setSaving(false);
-}
-
-async function clearDone() {
-  items = items.filter(i => !i.done);
-  renderItems();
-  setSaving(true);
-  try {
-    await saveCategory(activeTab, items);
-    showToast("Cleared completed items");
-  } catch(e) { showToast("Save failed: " + e.message); }
-  setSaving(false);
-}
-
-async function saveEdit(id, newText) {
-  editingId = null;
-  const text = newText.trim();
-  if (!text) { renderItems(); return; }
-  items = items.map(i => i.id === id ? { ...i, text } : i);
-  renderItems();
-  setSaving(true);
-  try {
-    await saveCategory(activeTab, items);
-    showToast("Item updated");
-  } catch(e) { showToast("Save failed: " + e.message); }
-  setSaving(false);
-}
-
-function setSaving(val) {
-  saving = val;
-  document.getElementById("saving-indicator").style.display = val ? "inline" : "none";
 }
 
 document.getElementById("signin-btn").addEventListener("click", doSignIn);
+document.getElementById("import-btn").addEventListener("click", doHomeImport);
 
 (function loadGIS() {
   const s = document.createElement("script");
